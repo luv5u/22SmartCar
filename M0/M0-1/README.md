@@ -1,7 +1,7 @@
 # M0-1
 ## M0-1-1 物理机安装ubuntu
-主要学习方法：跟随csdn上文章指引一步步进行，遇到问题时使用AI辅助解决
-参考文章链接：
+- 主要学习方法：跟随csdn上文章指引一步步进行，遇到问题时使用AI辅助解决
+- 参考文章链接：  
 1. https://blog.csdn.net/babailicsdn/article/details/126585640?fromshare=blogdetail&sharetype=blogdetail&sharerId=126585640&sharerefer=PC&sharesource=qq_59512969&sharefrom=from_link
 2. https://blog.csdn.net/Hclam/article/details/148404947?fromshare=blogdetail&sharetype=blogdetail&sharerId=148404947&sharerefer=PC&sharesource=qq_59512969&sharefrom=from_link
 ### 问题一：
@@ -20,19 +20,19 @@
 - 结果：重装后顺利启动且没有报错
 - 使用AI：DeepSeek
 ## M0-1-2 安装ROS2 Humble
-主要学习方法：跟随csdn上文章指引一步步进行
-参考文章链接：
+- 主要学习方法：跟随csdn上文章指引一步步进行
+- 参考文章链接：  
 https://blog.csdn.net/weixin_55944949/article/details/140373710?ops_request_misc=elastic_search_misc&request_id=3e24baf99fd01419e370d5d8ac70855d&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~top_positive~default-2-140373710-null-null.142^v102^pc_search_result_base4&utm_term=ROS2%20Humble安装&spm=1018.2226.3001.4187
 ## M0-1-3 安装python环境
-主要学习方法：跟随csdn上文章指引进行，并根据ChatGPT建议使用miniconda同时跟随其指引安装
-参考文章链接：
+- 主要学习方法：跟随csdn上文章指引进行，并根据ChatGPT建议使用miniconda同时跟随其指引安装
+- 参考文章链接：  
 https://blog.csdn.net/ramsey17/article/details/137643804?ops_request_misc=&request_id=&biz_id=102&utm_term=ubuntu中安装Python虚拟环境&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduweb~default-0-137643804.142^v102^pc_search_result_base4&spm=1018.2226.3001.4187
 ### M0-1-4 安装c/c++，vs及必要插件
-主要学习方法：根据deepseek建议使用build-essent安装gcc等，而后根据csdn上文章安装vs及必要插件
-参考文章链接：
+- 主要学习方法：根据deepseek建议使用build-essent安装gcc等，而后根据csdn上文章安装vs及必要插件
+- 参考文章链接：  
 1. https://blog.csdn.net/Forever_change/article/details/134006968?ops_request_misc=&request_id=&biz_id=102&utm_term=ubuntu中安装C/CPP%20vscode&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduweb~default-0-134006968.142^v102^pc_search_result_base4&spm=1018.2226.3001.4187
 2. https://blog.csdn.net/u014361280/article/details/127986092
 ### M0-1-5 安装Git及创建新仓库
-主要学习方法：跟随csdn上文章及推荐的学习视频一步步进行
-参考文章链接：
+- 主要学习方法：跟随csdn上文章及推荐的学习视频一步步进行
+- 参考文章链接：  
 https://blog.csdn.net/blackcat0_0/article/details/147378341?ops_request_misc=elastic_search_misc&request_id=03cfe7fd300c1311e6662915c0a1f634&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~top_positive~default-2-147378341-null-null.142^v102^pc_search_result_base4&utm_term=ubuntu中安装git&spm=1018.2226.3001.4187
