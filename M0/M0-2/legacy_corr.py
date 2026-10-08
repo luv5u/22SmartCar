@@ -3,7 +3,7 @@ import csv
 import math
 import numpy as np
 
-CONFIG_PATH = "config.yaml"
+CONFIG_PATH = "config.yaml" #存储yaml文件路径
 
 with open(CONFIG_PATH) as f:
     cfg = yaml.safe_load(f)
@@ -45,16 +45,21 @@ for i in range(n):
 denom = math.sqrt(dx * dy)
 r = prod / denom
 
-#使用numpy验算结果
-xn = np.array(xs)
-yn = np.array(ys)
+#使用numpy验算结果并封装
+def corr_numpy(xs,ys)
+    xn = np.array(xs)
+    yn = np.array(ys)
 
-r_np = np.corrcoef(xn,yn)[0,1]
+    rn = np.corrcoef(xn,yn)[0,1]
+    return rn
 
-print("n =", n)
-print("mean_x =", mean_x)
-print("mean_y =", mean_y)
-print("r =", r)
 
-#打印numpy验算结果
-print("r_np =", r_np)
+if __name__ == '__main__': #保护
+    #获得numpy计算结果
+    r_np = corr_numpy(xs,ys)
+    
+    print("n =", n)
+    print("mean_x =", mean_x)
+    print("mean_y =", mean_y)
+    print("r =", r)
+    print("r_np =", r_np)
