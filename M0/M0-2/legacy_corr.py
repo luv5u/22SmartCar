@@ -1,6 +1,7 @@
 import yaml
 import csv
 import math
+import numpy as np
 
 CONFIG_PATH = "config.yaml"
 
@@ -44,7 +45,16 @@ for i in range(n):
 denom = math.sqrt(dx * dy)
 r = prod / denom
 
+#使用numpy验算结果
+xn = np.array(xs)
+yn = np.array(ys)
+
+r_np = np.corrcoef(xn,yn)[0,1]
+
 print("n =", n)
 print("mean_x =", mean_x)
 print("mean_y =", mean_y)
 print("r =", r)
+
+#打印numpy验算结果
+print("r_np =", r_np)
