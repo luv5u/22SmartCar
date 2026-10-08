@@ -4,7 +4,7 @@ import math
 import numpy as np
 
 #封装yaml读取与配置读取
-def load_cfg (CONFIG_PATH = "config.yaml") #存储yaml文件路径
+def load_cfg (CONFIG_PATH = "config.yaml"): #存储yaml文件路径
 
     with open(CONFIG_PATH) as f:
         cfg = yaml.safe_load(f)
@@ -17,7 +17,7 @@ def load_cfg (CONFIG_PATH = "config.yaml") #存储yaml文件路径
     return csv_path, col_x, col_y
 
 #封装csv内数据读取
-def load_csv (csv_path, col_x, col_y)
+def load_csv (csv_path, col_x, col_y):
     xs = []
     ys = []
 
@@ -30,7 +30,7 @@ def load_csv (csv_path, col_x, col_y)
     return xs, ys
 
 #封装一般方式计算相关系数
-def corr_math (xs, ys)
+def corr_math (xs, ys):
     n = len(xs)
     
     #得到x，y各自的总和
@@ -62,7 +62,7 @@ def corr_math (xs, ys)
     return n, mean_x, mean_y, r
 
 #使用numpy验算结果并封装
-def corr_numpy(xs,ys)
+def corr_numpy(xs,ys):
     #x，y分别变为数组
     xn = np.array(xs)
     yn = np.array(ys)
@@ -75,7 +75,7 @@ if __name__ == '__main__': #保护
     #读取配置
     csv_path, col_x, col_y = load_cfg (CONFIG_PATH = "config.yaml")
     #读取数据
-    xs, ys = def load_csv (csv_path, col_x, col_y)
+    xs, ys = load_csv (csv_path, col_x, col_y)
     
     #获得一般计算结果
     n, mean_x, mean_y, r = corr_math(xs, ys)
