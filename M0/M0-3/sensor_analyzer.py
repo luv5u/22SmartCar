@@ -19,58 +19,74 @@ sensor_analyzer.py  —— 上一届学长留下的"能用"的脚本
 import csv
 import os
 import math
+import argparse
 
-CURRENT_DIR = os.path.dirname(os.path.abspath(__file__)) #获取当前绝对路径
-INPUT_FILE = os.path.join(CURRENT_DIR,"sensor_data.csv")
-OUTPUT_FILE = "cleaned_data.csv"
-OUTPUT_DIR = "."  # 输出目录（当前目录）
-TARGET_COLUMN = "value" #指出需要处理的剔除条件相关列
+def main():
 
-data = []
-cleaned = []
+    parser = argparse.ArgumentParser(description="传感器数据分析")
+    parser.add_argument("--input", help="输入CSV文件路径")
+    parser.add_argument("--output", help="输出CSV文件路径")
+    args = parser.parse_args()
 
-print("=== 传感器数据分析 ===")
+    CURRENT_DIR = os.path.dirname(os.path.abspath(__file__)) #获取当前绝对路径
+    INPUT_FILE = os.path.join(CURRENT_DIR,"sensor_data.csv")
+    OUTPUT_FILE = "cleaned_data.csv"
+    OUTPUT_DIR = "."  # 输出目录（当前目录）
+    TARGET_COLUMN = "value" #指出需要处理的剔除条件相关列
 
-# --- 读取数据 ---
-with open(INPUT_FILE,"r",newline='',encoding='utf-8') as f:
-    reader = csv.DictReader(f)
+    if args.input:
+        INPUT_FILE = args.input
+    if args.output:
+        OUTPUT_FILE = args.output
 
-    for row in reader:
-        t = float(row["time"])
-        v = float(row["value"])
-        data.append(v)
+    data = []
+    cleaned = []
 
-print("共读取 %d 条数据" % len(data))
+    print("=== 传感器数据分析 ===")
 
-# --- 计算平均值 ---
-total = 0
-for v in data:
-    total += v
-mean = total / len(data)
+    # --- 读取数据 ---
+    with open(INPUT_FILE,"r",newline='',encoding='utf-8') as f:
+        reader = csv.DictReader(f)
 
-# --- 计算标准差 ---
-tss = 0
-for v in data:
-    tss += (v**2/ len(data))
-var = tss - mean**2
-std = math.sqrt(var)
+        for row in reader:
+            t = float(row["time"])
+            v = float(row["value"])
+            data.append(v)
 
-# --- 剔除离群值 ---
-with open(INPUT_FILE,"r",newline='',encoding='utf-8') as f:
-    reader = csv.DictReader(f)
-    for row in reader:
-        v = float(row["value"])
-        if abs(v - mean) <= 2 * std:
-            cleaned.append(row) #整行放入
+    print("共读取 %d 条数据" % len(data))
 
-# --- 输出清洗后的数据 ---
-output_path = os.path.join(OUTPUT_DIR, OUTPUT_FILE)
-with open(output_path,"w",newline='',encoding='utf-8') as f:
-    writer = csv.DictWriter(f,fieldnames=["time", "value"])
-    writer.writeheader() #写表头
-    writer.writerows(cleaned) #写出所有正常行
+    # --- 计算平均值 ---
+    total = 0
+    for v in data:
+        total += v
+    mean = total / len(data)
 
-print("均值 mean = %.4f" % mean)
-print("标准差 std = %.4f" % std)
-print("清洗后剩余 %d 条" % len(cleaned))
-print("已保存到 %s" % output_path)
+    # --- 计算标准差 ---
+    tss = 0
+    for v in data:
+        tss += (v**2/ len(data))
+    var = tss - mean**2
+    std = math.sqrt(var)
+
+    # --- 剔除离群值 ---
+    with open(INPUT_FILE,"r",newline='',encoding='utf-8') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            v = float(row["value"])
+            if abs(v - mean) <= 2 * std:
+                cleaned.append(row) #整行放入
+
+    # --- 输出清洗后的数据 ---
+    output_path = os.path.join(OUTPUT_DIR, OUTPUT_FILE)
+    with open(output_path,"w",newline='',encoding='utf-8') as f:
+        writer = csv.DictWriter(f,fieldnames=["time", "value"])
+        writer.writeheader() #写表头
+        writer.writerows(cleaned) #写出所有正常行
+
+    print("均值 mean = %.4f" % mean)
+    print("标准差 std = %.4f" % std)
+    print("清洗后剩余 %d 条" % len(cleaned))
+    print("已保存到 %s" % output_path)
+
+if __name__ == "__main__":
+    main()
