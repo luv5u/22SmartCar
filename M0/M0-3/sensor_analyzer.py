@@ -19,7 +19,8 @@ sensor_analyzer.py  —— 上一届学长留下的"能用"的脚本
 import csv
 import os
 
-INPUT_FILE = "sensor_data.csv"
+CURRENT_DIR = os.path.dirname(os.path.abspath(__file__)) #获取当前绝对路径
+INPUT_FILE = os.path.join(CURRENT_DIR,"sensor_data.csv")
 OUTPUT_FILE = "cleaned_data.csv"
 OUTPUT_DIR = "out"  # 输出目录
 
