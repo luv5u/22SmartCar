@@ -18,6 +18,7 @@ sensor_analyzer.py  —— 上一届学长留下的"能用"的脚本
 
 import csv
 import os
+import math
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__)) #获取当前绝对路径
 INPUT_FILE = os.path.join(CURRENT_DIR,"sensor_data.csv")
@@ -49,10 +50,11 @@ for v in data:
 mean = total / len(data)
 
 # --- 计算标准差 ---
-acc = 0
+tss = 0
 for v in data:
-    acc += (v - mean)
-std = acc / len(data)
+    tss += (v**2/ len(data))
+var = tss - mean**2
+std = math.sqrt(var)
 
 # --- 剔除离群值 ---
 for v in data:
