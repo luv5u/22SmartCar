@@ -24,9 +24,9 @@ CURRENT_DIR = os.path.dirname(os.path.abspath(__file__)) #获取当前绝对路�
 INPUT_FILE = os.path.join(CURRENT_DIR,"sensor_data.csv")
 OUTPUT_FILE = "cleaned_data.csv"
 OUTPUT_DIR = "out"  # 输出目录
+TARGET_COLUMN = "value" #指出需要处理的剔除条件相关列
 
 data = []
-times = []
 cleaned = []
 
 print("=== 传感器数据分析 ===")
@@ -38,7 +38,6 @@ with open(INPUT_FILE,"r",newline='',encoding='utf-8') as f:
     for row in reader:
         t = float(row["time"])
         v = float(row["value"])
-        times.append(t)
         data.append(v)
 
 print("共读取 %d 条数据" % len(data))
@@ -57,9 +56,12 @@ var = tss - mean**2
 std = math.sqrt(var)
 
 # --- 剔除离群值 ---
-for v in data:
-    if abs(v - mean) > 2 * std:
-        data.remove(v)
+with open(INPUT_FILE,"r",newline='',encoding='utf-8') as f:
+    reader = csv.DictReader(f)
+    for row in reader:
+        v = float(row["value"])
+        if abs(v - mean) <= 2 * std:
+            cleaned.append(row) #整行放入
 
 # --- 输出清洗后的数据 ---
 output_path = os.path.join("/", OUTPUT_DIR, OUTPUT_FILE)
