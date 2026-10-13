@@ -31,13 +31,14 @@ cleaned = []
 print("=== 传感器数据分析 ===")
 
 # --- 读取数据 ---
-reader = csv.DictReader(open(INPUT_FILE, "r"))
+with open(INPUT_FILE,"r",newline='',encoding='utf-8') as f:
+    reader = csv.DictReader(f)
 
-for row in reader:
-    t = float(row["time"])
-    v = float(row["value"])
-    times.append(t)
-    data.append(v)
+    for row in reader:
+        t = float(row["time"])
+        v = float(row["value"])
+        times.append(t)
+        data.append(v)
 
 print("共读取 %d 条数据" % len(data))
 
