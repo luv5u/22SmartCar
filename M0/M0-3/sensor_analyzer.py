@@ -67,7 +67,7 @@ with open(INPUT_FILE,"r",newline='',encoding='utf-8') as f:
 output_path = os.path.join(OUTPUT_DIR, OUTPUT_FILE)
 with open(output_path,"w",newline='',encoding='utf-8') as f:
     writer = csv.DictWriter(f,fieldnames=["time", "value"])
-    writer.writeheader #写表头
+    writer.writeheader() #写表头
     writer.writerows(cleaned) #写出所有正常行
 
 print("均值 mean = %.4f" % mean)
