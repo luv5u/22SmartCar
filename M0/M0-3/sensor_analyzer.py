@@ -23,7 +23,7 @@ import math
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__)) #获取当前绝对路径
 INPUT_FILE = os.path.join(CURRENT_DIR,"sensor_data.csv")
 OUTPUT_FILE = "cleaned_data.csv"
-OUTPUT_DIR = "out"  # 输出目录
+OUTPUT_DIR = "."  # 输出目录（当前目录）
 TARGET_COLUMN = "value" #指出需要处理的剔除条件相关列
 
 data = []
@@ -64,7 +64,7 @@ with open(INPUT_FILE,"r",newline='',encoding='utf-8') as f:
             cleaned.append(row) #整行放入
 
 # --- 输出清洗后的数据 ---
-output_path = os.path.join("/", OUTPUT_DIR, OUTPUT_FILE)
+output_path = os.path.join(OUTPUT_DIR, OUTPUT_FILE)
 with open(output_path,"w",newline='',encoding='utf-8') as f:
     writer = csv.DictWriter(f,fieldnames=["time", "value"])
     writer.writeheader #写表头
