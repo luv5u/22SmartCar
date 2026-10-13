@@ -65,11 +65,10 @@ with open(INPUT_FILE,"r",newline='',encoding='utf-8') as f:
 
 # --- 输出清洗后的数据 ---
 output_path = os.path.join("/", OUTPUT_DIR, OUTPUT_FILE)
-f = open(output_path, "w")
-writer = csv.writer(f)
-writer.writerow(["time", "value"])
-for v in cleaned:
-    writer.writerow([v])
+with open(output_path,"w",newline='',encoding='utf-8') as f:
+    writer = csv.DictWriter(f,fieldnames=["time", "value"])
+    writer.writeheader #写表头
+    writer.writerows(cleaned) #写出所有正常行
 
 print("均值 mean = %.4f" % mean)
 print("标准差 std = %.4f" % std)
