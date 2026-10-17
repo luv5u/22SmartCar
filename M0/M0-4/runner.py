@@ -44,6 +44,7 @@ def run(tasks, order, timeout, seed):
         # (1) 执行前检查超时
         if timeout is not None and time.time() - begin > timeout:
             timed_out = True
+            log(TIMEOUT, name, f"任务开始前已超时（{time.time()-begin:.2f}s > {timeout}s）")
             break
 
         # (2) 检查依赖：有一个不是 SUCCESS 就跳过
@@ -65,6 +66,7 @@ def run(tasks, order, timeout, seed):
             # 重试前也检查超时
             if timeout is not None and time.time() - begin > timeout:
                 timed_out = True
+                log(TIMEOUT, name, f"重试前已超时（{time.time()-begin:.2f}s > {timeout}s）")
                 break
 
             r["attempts"] = attempt
@@ -77,6 +79,7 @@ def run(tasks, order, timeout, seed):
             # sleep 后立即检查超时（关键：防止最后一个任务睡过头）
             if timeout is not None and time.time() - begin > timeout:
                 timed_out = True
+                log(TIMEOUT, name, f"执行中超时（{time.time()-begin:.2f}s > {timeout}s）")
                 break
 
             if rng.random() < t["success_rate"]:
