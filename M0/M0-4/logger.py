@@ -21,7 +21,7 @@ def log(status, name, msg=""):
     """status: SUCCESS/FAILED/RETRY/SKIPPED/TIMEOUT/INFO"""
     color = COLORS.get(status, "") if USE_COLOR else ""
     reset = RESET if USE_COLOR else ""
-    text = f"[{status}] {color}{name}{reset}"
+    text = f"{color}[{status}] {name}{reset}"
     if msg:
         text += f" — {msg}"
     print(text, flush=True)
