@@ -59,7 +59,12 @@ def main():
         sys.exit(1)
 
     print(f"\n报告已写入: {args.report}", flush=True)
-    print(f"总耗时: {total:.2f}s，超时: {timed_out}", flush=True)
+    
+    #区分正常结束与超时终止
+    if timed_out:
+        print(f"运行因超时终止，总耗时: {total:.2f}s，超时: {timed_out}", flush=True)
+    else:
+        print(f"运行完成，总耗时: {total:.2f}s，超时: {timed_out}", flush=True)
 
 
 if __name__ == "__main__":
