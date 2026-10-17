@@ -1,0 +1,62 @@
+{
+  "timeout": false,
+  "total_duration": 11.01,
+  "tasks": [
+    {
+      "name": "Init",
+      "status": "SUCCESS",
+      "attempts": 1,
+      "duration": 0.5,
+      "started_at": 1792250592.9628441,
+      "ended_at": 1792250593.4634027
+    },
+    {
+      "name": "Navigate",
+      "status": "SUCCESS",
+      "attempts": 1,
+      "duration": 2.5,
+      "started_at": 1792250593.4634817,
+      "ended_at": 1792250595.9658015
+    },
+    {
+      "name": "DetectQR",
+      "status": "SUCCESS",
+      "attempts": 1,
+      "duration": 1.5,
+      "started_at": 1792250595.9658568,
+      "ended_at": 1792250597.467456
+    },
+    {
+      "name": "Grasp",
+      "status": "SUCCESS",
+      "attempts": 1,
+      "duration": 1.0,
+      "started_at": 1792250597.4675305,
+      "ended_at": 1792250598.4687343
+    },
+    {
+      "name": "AvoidObstacle",
+      "status": "SUCCESS",
+      "attempts": 1,
+      "duration": 2.0,
+      "started_at": 1792250598.468844,
+      "ended_at": 1792250600.4708502
+    },
+    {
+      "name": "Place",
+      "status": "SUCCESS",
+      "attempts": 1,
+      "duration": 1.0,
+      "started_at": 1792250600.4709246,
+      "ended_at": 1792250601.4718554
+    },
+    {
+      "name": "ReturnHome",
+      "status": "SUCCESS",
+      "attempts": 1,
+      "duration": 2.5,
+      "started_at": 1792250601.4719243,
+      "ended_at": 1792250603.9738486
+    }
+  ]
+}
