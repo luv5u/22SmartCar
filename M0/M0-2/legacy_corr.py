@@ -1,6 +1,7 @@
 import yaml
 import csv
 import math
+import os
 import numpy as np
 
 #自定义异常
@@ -9,10 +10,22 @@ class CorrToolError(Exception):
 
 #封装yaml读取与配置读取
 def load_cfg (CONFIG_PATH = "config.yaml"): #存储yaml文件路径
-
+    if not os.path.exists(CONFIG_PATH):
+        raise CorrToolError(f"配置文件不存在：{CONFIG_PATH}")
+    
     with open(CONFIG_PATH) as f:
         cfg = yaml.safe_load(f)
 
+    if cfg is None:
+        raise CorrToolError(f"配置文件为空：{CONFIG_PATH}")
+
+    for k in ("input_csv","colums"):
+        if k not in cfg:
+            raise CorrToolError(f"配置文件缺少字段：{k}")
+    for k in ("x","y"):
+        if k not in cfg["columns"]:
+            raise CorrToolError(f"配置文件的columns缺少字段：{k}")
+    
     #将其中配置提取出
     csv_path = cfg["input_csv"]
     col_x = cfg["columns"]["x"]
