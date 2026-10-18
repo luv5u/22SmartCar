@@ -126,4 +126,13 @@ def main():
     print("已保存到 %s" % os.path.abspath(OUTPUT_FILE))
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("\n已中断", file=sys.stderr)
+        sys.exit(130)
+    except SystemExit:
+        raise  # 让 fail()/argparse 的退出码正常传播
+    except Exception as e:  # 最后兜底，绝不抛栈回溯
+        print("未预期的错误：%s: %s" % (type(e).__name__, e), file=sys.stderr)
+        sys.exit(1)
