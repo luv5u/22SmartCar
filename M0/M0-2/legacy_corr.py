@@ -2,6 +2,8 @@ import yaml
 import csv
 import math
 import os
+import argparse
+import sys
 import numpy as np
 
 #自定义异常
@@ -109,21 +111,47 @@ def corr_numpy(xs,ys):
     r_np = np.corrcoef(xn,yn)[0,1] #计算相关系数矩阵并变换为相关系数
     return r_np
 
+#支持--config指定配置文件也支持位置参数
+def parse_args():
+    parse = argparse.ArgumentParser(description="计算两列数据的相关系数")
+    parse.add_argument("--config",dest="config", default=None,help="YAML配置文件路径")
+    parse.add_argument("config_pos",nargs="?", default=None,help="YAML配置文件路径（位置参数写法）")
+    return parse.parse_args()
 
 if __name__ == '__main__': #保护
-    #读取配置
-    csv_path, col_x, col_y = load_cfg (CONFIG_PATH = "config.yaml")
-    #读取数据
-    xs, ys = load_csv (csv_path, col_x, col_y)
+    try:
+        args = parse_args()
+        #优先--config指定与位置参数
+        config_path = args.config or args.config_pos or "config.yaml"
     
-    #获得一般计算结果
-    n, mean_x, mean_y, r = corr_math(xs, ys)
+        #读取配置
+        csv_path, col_x, col_y = load_cfg (CONFIG_PATH = "config.yaml")
+
+        #避免当前目录找不到CSV文件
+        if not os.path.isabs(csv_path) and not os.path.exists(csv_path):
+            alt = os.path.join(os.path.dirname(os.path.abspath(config_path)),csv_path)
+            if os.path.exists(alt):
+                csv_path = alt
+        
+        #读取数据
+        xs, ys = load_csv (csv_path, col_x, col_y)
     
-    #获得numpy计算结果
-    r_np = corr_numpy(xs,ys)
-    
-    print("n =", n)
-    print("mean_x =", mean_x)
-    print("mean_y =", mean_y)
-    print("r =", r)
-    print("r_np =", r_np)
+        #获得一般计算结果
+        n, mean_x, mean_y, r = corr_math(xs, ys)
+        
+        #获得numpy计算结果
+        r_np = corr_numpy(xs,ys)
+        
+        print("n =", n)
+        print("mean_x =", mean_x)
+        print("mean_y =", mean_y)
+        print("r =", r)
+        print("r_np =", r_np)
+
+    #使错误统一输出，同时统一退出码
+    except CorrToolError as e:
+        print("[ERROR]",e,file=sys.stderr)
+        sys.exit(1)
+    except Exception as e:
+        print("[ERROR]未知错误:", e,file=sys.stderr)
+        sys.exit(1)
