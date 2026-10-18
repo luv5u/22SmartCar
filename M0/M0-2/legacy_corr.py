@@ -21,7 +21,7 @@ def load_cfg (CONFIG_PATH = "config.yaml"): #存储yaml文件路径
     if cfg is None:
         raise CorrToolError(f"配置文件为空：{CONFIG_PATH}")
 
-    for k in ("input_csv","colums"):
+    for k in ("input_csv","columns"):
         if k not in cfg:
             raise CorrToolError(f"配置文件缺少字段：{k}")
     for k in ("x","y"):
@@ -125,7 +125,7 @@ if __name__ == '__main__': #保护
         config_path = args.config or args.config_pos or "config.yaml"
     
         #读取配置
-        csv_path, col_x, col_y = load_cfg (CONFIG_PATH = "config.yaml")
+        csv_path, col_x, col_y = load_cfg (config_path)
 
         #避免当前目录找不到CSV文件
         if not os.path.isabs(csv_path) and not os.path.exists(csv_path):
