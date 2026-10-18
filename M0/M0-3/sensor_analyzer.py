@@ -22,6 +22,52 @@ import math
 import argparse
 import sys
 
+def fail(msg):
+    print("错误：%s" % msg, file=sys.stderr)
+    sys.exit(1)
+
+def load_data(path):
+    if not os.path.isfile(path):
+        fail("输入文件不存在：%s" % path)
+
+    rows = []
+    values = []
+    try:
+        with open(path, "r", newline="", encoding="utf-8-sig") as f:
+            reader = csv.DictReader(f)
+            if reader.fieldnames is None:
+                fail("输入文件为空或没有表头：%s" % path)
+
+            fieldnames = [name.strip() for name in reader.fieldnames]
+            if "time" not in fieldnames or "value" not in fieldnames:
+                fail("列名不符，需要包含 'time' 和 'value' 两列，实际表头：%s"
+                     % reader.fieldnames)
+
+            for lineno, row in enumerate(reader, start=2):  # 第 2 行起为数据
+                # 跳过完全空行
+                if row is None or all(
+                    (v is None or str(v).strip() == "") for v in row.values()
+                ):
+                    continue
+                try:
+                    # 校验 time（不强求使用，但必须是数值）
+                    float(row["time"])
+                    v = float(row["value"])
+                except (ValueError, TypeError):
+                    fail("第 %d 行包含非数值内容：%r" % (lineno, row))
+                except KeyError as e:
+                    fail("第 %d 行缺少列 %s" % (lineno, e))
+                rows.append(row)
+                values.append(v)
+    except UnicodeDecodeError:
+        fail("文件编码无法按 UTF-8 读取：%s" % path)
+    except csv.Error as e:
+        fail("CSV 解析失败：%s" % e)
+    except OSError as e:
+        fail("无法读取文件 %s：%s" % (path, e))
+
+    return rows, values
+
 def main():
 
     parser = argparse.ArgumentParser(description="传感器数据分析")
@@ -38,16 +84,12 @@ def main():
 
     print("=== 传感器数据分析 ===")
 
-    # --- 读取数据 ---
-    with open(INPUT_FILE,"r",newline='',encoding='utf-8') as f:
-        reader = csv.DictReader(f)
+    rows, values = load_data(INPUT_FILE) #读取数据
 
-        for row in reader:
-            t = float(row["time"])
-            v = float(row["value"])
-            data.append(v)
+    if len(values) == 0:
+        fail("输入文件没有任何有效数据行：%s" % INPUT_FILE)
 
-    print("共读取 %d 条数据" % len(data))
+    print("共读取 %d 条数据" % len(values))
 
     # --- 计算平均值 ---
     total = 0
