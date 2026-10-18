@@ -20,6 +20,7 @@ import csv
 import os
 import math
 import argparse
+import sys
 
 def main():
 
@@ -29,15 +30,8 @@ def main():
     args = parser.parse_args()
 
     CURRENT_DIR = os.path.dirname(os.path.abspath(__file__)) #获取当前绝对路径
-    INPUT_FILE = os.path.join(CURRENT_DIR,"sensor_data.csv")
-    OUTPUT_FILE = "cleaned_data.csv"
-    OUTPUT_DIR = "."  # 输出目录（当前目录）
-    TARGET_COLUMN = "value" #指出需要处理的剔除条件相关列
-
-    if args.input:
-        INPUT_FILE = args.input
-    if args.output:
-        OUTPUT_FILE = args.output
+    INPUT_FILE = args.input or os.path.join(CURRENT_DIR,"sensor_data.csv")
+    OUTPUT_FILE = args.output or "cleaned_data.csv"
 
     data = []
     cleaned = []
