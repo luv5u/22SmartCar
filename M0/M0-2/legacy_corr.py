@@ -3,6 +3,10 @@ import csv
 import math
 import numpy as np
 
+#自定义异常
+class CorrToolError(Exception):
+    pass
+
 #封装yaml读取与配置读取
 def load_cfg (CONFIG_PATH = "config.yaml"): #存储yaml文件路径
 
