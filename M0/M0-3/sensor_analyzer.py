@@ -83,12 +83,8 @@ def main():
     parser.add_argument("--output", help="输出CSV文件路径")
     args = parser.parse_args()
 
-    CURRENT_DIR = os.path.dirname(os.path.abspath(__file__)) #获取当前绝对路径
-    INPUT_FILE = args.input or os.path.join(CURRENT_DIR,"sensor_data.csv")
+    INPUT_FILE = args.input or "sensor_data.csv"
     OUTPUT_FILE = args.output or "cleaned_data.csv"
-
-    data = []
-    cleaned = []
 
     print("=== 传感器数据分析 ===")
 
@@ -102,24 +98,32 @@ def main():
     mean, std = compute_stats(values) #计算平均值与标准差
 
     # --- 剔除离群值 ---
-    with open(INPUT_FILE,"r",newline='',encoding='utf-8') as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            v = float(row["value"])
-            if abs(v - mean) <= 2 * std:
-                cleaned.append(row) #整行放入
+    if std > 0:
+        cleaned = [row for row, v in zip(rows, values)
+                   if abs(v - mean) <= 2 * std]
+    else:
+        cleaned = list(rows)
 
     # --- 输出清洗后的数据 ---
-    output_path = os.path.join(OUTPUT_DIR, OUTPUT_FILE)
-    with open(output_path,"w",newline='',encoding='utf-8') as f:
-        writer = csv.DictWriter(f,fieldnames=["time", "value"])
-        writer.writeheader() #写表头
-        writer.writerows(cleaned) #写出所有正常行
+    out_dir = os.path.dirname(os.path.abspath(OUTPUT_FILE))
+    if not os.path.isdir(out_dir):
+        try:
+            os.makedirs(out_dir, exist_ok=True)
+        except OSError as e:
+            fail("无法创建输出目录 %s：%s" % (out_dir, e))
+
+    try:
+        with open(OUTPUT_FILE, "w", newline="", encoding="utf-8") as f:
+            writer = csv.DictWriter(f, fieldnames=["time", "value"])
+            writer.writeheader()
+            writer.writerows(cleaned)
+    except OSError as e:
+        fail("无法写入输出文件 %s：%s" % (OUTPUT_FILE, e))
 
     print("均值 mean = %.4f" % mean)
     print("标准差 std = %.4f" % std)
     print("清洗后剩余 %d 条" % len(cleaned))
-    print("已保存到 %s" % output_path)
+    print("已保存到 %s" % os.path.abspath(OUTPUT_FILE))
 
 if __name__ == "__main__":
     main()
