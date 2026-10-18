@@ -26,6 +26,7 @@ def fail(msg):
     print("错误：%s" % msg, file=sys.stderr)
     sys.exit(1)
 
+#单独封装读取相关函数并进行异常处理
 def load_data(path):
     if not os.path.isfile(path):
         fail("输入文件不存在：%s" % path)
@@ -68,6 +69,13 @@ def load_data(path):
 
     return rows, values
 
+#单独封装平均值与标准差计算
+def compute_stats(values):
+    n = len(values)
+    mean = sum(values) / n
+    var = sum((v - mean) ** 2 for v in values) / n  # 总体标准差
+    return mean, math.sqrt(var)
+
 def main():
 
     parser = argparse.ArgumentParser(description="传感器数据分析")
@@ -91,18 +99,7 @@ def main():
 
     print("共读取 %d 条数据" % len(values))
 
-    # --- 计算平均值 ---
-    total = 0
-    for v in data:
-        total += v
-    mean = total / len(data)
-
-    # --- 计算标准差 ---
-    tss = 0
-    for v in data:
-        tss += (v**2/ len(data))
-    var = tss - mean**2
-    std = math.sqrt(var)
+    mean, std = compute_stats(values) #计算平均值与标准差
 
     # --- 剔除离群值 ---
     with open(INPUT_FILE,"r",newline='',encoding='utf-8') as f:
