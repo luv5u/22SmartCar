@@ -35,20 +35,39 @@ def load_cfg (CONFIG_PATH = "config.yaml"): #存储yaml文件路径
 
 #封装csv内数据读取
 def load_csv (csv_path, col_x, col_y):
+    if not os.path.exists(csv_path):
+        raise CorrToolError(f"CSV文件不存在：{csv_path}")
+    
     xs = []
     ys = []
 
     with open(csv_path) as f:
         reader = csv.DictReader(f)
+        
+        if reader.fieldnames is None:
+            raise CorrToolError(f"CSV文件为空：{csv_path}")
+        if col_x not in reader.fieldnames:
+            raise CorrToolError(f"CSV列名不匹配：{col_x}")
+        if col_y not in reader.fieldnames:
+            raise CorrToolError(f"CSV列名不匹配：{col_y}")
+        
         #将读取的数据转化为列表
         for row in reader:
             xs.append(float(row[col_x]))
             ys.append(float(row[col_y]))
+    if len(xs) == 0:
+        raise CorrToolError(f"CSV文件没有数据行：{csv_path}")
+    if len(xs) < 2:
+        raise CorrToolError("有效数据小于2行")
+    
     return xs, ys
 
 #封装一般方式计算相关系数
 def corr_math (xs, ys):
     n = len(xs)
+
+    if len(xs) != len(ys):
+        raise CorrToolError("两列长度不一致")
     
     #得到x，y各自的总和
     sum_x = 0.0
