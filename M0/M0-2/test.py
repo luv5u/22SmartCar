@@ -1,4 +1,4 @@
-from legacy_corr import corr_math, load_csv
+from legacy_corr import corr_math, load_csv, CorrToolError
 
 def test_positive():
     # [1,2,3] 与 [2,4,6] 应该完全正相关
@@ -21,7 +21,7 @@ def test_zero_variance():
     try:
         corr_math([1, 2, 3], [5, 5, 5])
         print("失败：零方差没有报错")
-    except ZeroDivisionError:
+    except CorrToolError:
         print("通过：零方差")
 
 
@@ -31,7 +31,7 @@ def test_empty_file():
     try:
         load_csv("empty.csv", "a", "b")
         print("失败：空文件没有报错")
-    except Exception:
+    except CorrToolError:
         print("通过：空文件")
 
 if __name__ == "__main__":
