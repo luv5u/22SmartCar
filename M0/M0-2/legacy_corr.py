@@ -93,6 +93,9 @@ def corr_math (xs, ys):
 
         prod = prod + a * b #x，y与各自平均值差的乘积的和
 
+    if dx == 0.0 or dy == 0.0:
+        raise CorrToolError("某一列取值恒定，方差为0,相关系数无定义")
+    
     denom = math.sqrt(dx * dy) #开方
     r = prod / denom #得到相关系数
     return n, mean_x, mean_y, r
