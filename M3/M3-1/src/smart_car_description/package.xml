@@ -23,5 +23,8 @@
 <exec_depend>controller_manager</exec_depend>
 <exec_depend>joint_state_broadcaster</exec_depend>
 <exec_depend>ackermann_steering_controller</exec_depend>
+<exec_depend>ament_index_python</exec_depend>
+<exec_depend>launch</exec_depend>
+<exec_depend>launch_ros</exec_depend>
 
 </package>
