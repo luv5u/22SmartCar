@@ -1,0 +1,66 @@
+{
+  "source": "results/pose_graph_full.yaml",
+  "frame": "map",
+  "nodes": 265,
+  "node_id_min": 0,
+  "node_id_max": 264,
+  "unique_edges": 275,
+  "raw_edges": 275,
+  "sequential_edges": 264,
+  "nonsequential_edges": 11,
+  "connected_components": 1,
+  "cycle_rank": 11,
+  "early_late_edges": 11,
+  "early_late_pairs": [
+    [
+      0,
+      252
+    ],
+    [
+      0,
+      255
+    ],
+    [
+      0,
+      256
+    ],
+    [
+      1,
+      257
+    ],
+    [
+      2,
+      258
+    ],
+    [
+      3,
+      259
+    ],
+    [
+      5,
+      260
+    ],
+    [
+      6,
+      261
+    ],
+    [
+      6,
+      262
+    ],
+    [
+      7,
+      263
+    ],
+    [
+      8,
+      264
+    ]
+  ],
+  "max_endpoint_match_error_m": 0.0,
+  "first_last_node_distance_m": 0.8142843810963032,
+  "revisit_constraints_verified": true,
+  "detector_callback_verified": false,
+  "criterion": "One sensor with contiguous acquisition-order IDs. Early/late edges connect the first/last 15% of IDs and span >=75% of ID range.",
+  "limitation": "Marker edges have no constraint type, timestamp provenance, covariance or optimizer residual. Confirms graph connections across the revisit, not which internal loop detector function added them. Node endpoint distance is not the final vehicle closure error."
+}

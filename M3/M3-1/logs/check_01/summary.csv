@@ -1,0 +1,2 @@
+run,odom_position_m,odom_angle_deg,truth_position_m,truth_angle_deg,odom_truth_delta_error_m,odom_truth_yaw_error_deg
+1,0.7829574340654926,39.53065564029126,1.8051337821959101,85.32761909041885,1.065357114755785,45.7969634501276

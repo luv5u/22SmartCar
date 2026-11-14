@@ -1,0 +1,221 @@
+{
+  "map_file": "maps/map.yaml",
+  "route_file": "results/route_run_02.csv",
+  "map": {
+    "width_cells": 298,
+    "height_cells": 207,
+    "resolution_m": 0.05,
+    "origin": [
+      -7.11,
+      -1.23,
+      0
+    ],
+    "occupied_thresh": 0.65,
+    "free_thresh": 0.196
+  },
+  "walls": {
+    "south_outer_wall": {
+      "points": 290,
+      "rms_m": 0.02433369026633364,
+      "max_abs_m": 0.04930191068837614,
+      "band90_m": 0.07744999157742527,
+      "angle_deg": -1.0569949713478455
+    },
+    "south_inner_wall": {
+      "points": 270,
+      "rms_m": 0.028988763773821976,
+      "max_abs_m": 0.06275564374473028,
+      "band90_m": 0.09182823473372992,
+      "angle_deg": -1.0119925320100462
+    }
+  },
+  "final_wall_bands": {
+    "test_slices": 36,
+    "multiple_band_slices": 0,
+    "fraction": 0.0,
+    "largest_band_separation_m": null,
+    "definition": "Final occupied bands: >=2 pixels per band; >=1 empty normal bin; centers separated >=2 cells. Not proof of loop-closure activation."
+  },
+  "gate": {
+    "x_m": 0.6150000000000002,
+    "y_m": 7.995,
+    "width_min_m": 0.9500000000000001,
+    "width_max_m": 0.9500000000000001,
+    "min_cells": 19,
+    "sections": [
+      {
+        "x_m": 0.5149999999999997,
+        "y_low_m": 7.52,
+        "y_high_m": 8.47,
+        "cells": 19,
+        "width_m": 0.9500000000000001
+      },
+      {
+        "x_m": 0.5650000000000004,
+        "y_low_m": 7.52,
+        "y_high_m": 8.47,
+        "cells": 19,
+        "width_m": 0.9500000000000001
+      },
+      {
+        "x_m": 0.6150000000000002,
+        "y_low_m": 7.52,
+        "y_high_m": 8.47,
+        "cells": 19,
+        "width_m": 0.9500000000000001
+      },
+      {
+        "x_m": 0.665,
+        "y_low_m": 7.52,
+        "y_high_m": 8.47,
+        "cells": 19,
+        "width_m": 0.9500000000000001
+      },
+      {
+        "x_m": 0.7149999999999999,
+        "y_low_m": 7.52,
+        "y_high_m": 8.47,
+        "cells": 19,
+        "width_m": 0.9500000000000001
+      }
+    ]
+  },
+  "usability": {
+    "robot_radius_m": 0.3,
+    "diameter_m": 0.6,
+    "clearance_correction_m": 0.035355339059327376,
+    "anchors": {
+      "south": {
+        "x_m": 3.115000000000001,
+        "y_m": -0.05499999999999994,
+        "clearance_m": 0.9646446609406726,
+        "label": 1
+      },
+      "east": {
+        "x_m": 6.365000000000001,
+        "y_m": 4.445,
+        "clearance_m": 0.9646446609406726,
+        "label": 1
+      },
+      "north_left": {
+        "x_m": -3.9850000000000003,
+        "y_m": 8.045,
+        "clearance_m": 0.9646446609406726,
+        "label": 1
+      },
+      "north_right": {
+        "x_m": 2.5149999999999997,
+        "y_m": 7.945,
+        "clearance_m": 0.9646446609406726,
+        "label": 1
+      },
+      "west": {
+        "x_m": -5.285,
+        "y_m": 2.895,
+        "clearance_m": 0.9646446609406726,
+        "label": 1
+      }
+    },
+    "anchors_connected": true,
+    "local_gate_passable": true,
+    "gate_width_ge_3_cells": true,
+    "gate_nominal_width_m": 1.0,
+    "gate_width_minus_nominal_m": -0.04999999999999993,
+    "gate_margin_after_diameter_m": 0.3500000000000001,
+    "main_free_cells": 30206,
+    "main_free_area_m2": 75.51500000000001,
+    "other_free_cells": 606,
+    "main_free_cells_at_image_edge": 0,
+    "small_enclosed_occupied_components": 0,
+    "small_enclosed_occupied_cells": 0,
+    "small_island_max_cells": 5,
+    "limitation": "Connectivity under an assumed circular radius, treating unknown as blocked. Not actual Nav2 execution, not complete false-obstacle detection."
+  },
+  "route": {
+    "rows": 13954,
+    "duration_s": 199.1,
+    "max_tracking_error_m": 0.03247469125925351,
+    "last_logged_distance_to_start_m": 0.1503308129464597,
+    "last_logged_yaw_change_deg": 0.00029093488658976657,
+    "min_front_range_m": 0.5717756152153015,
+    "last_path_index": 765,
+    "x_extent_m": [
+      -6.020079453095438,
+      6.021065920515452
+    ],
+    "y_extent_m": [
+      -0.02004562253651549,
+      8.020074768467344
+    ],
+    "limitation": "Odom frame only. Last CSV sample precedes stopping; not actual final closure error or map-frame truth."
+  },
+  "graph": {
+    "source": "results/pose_graph_full.yaml",
+    "frame": "map",
+    "nodes": 265,
+    "node_id_min": 0,
+    "node_id_max": 264,
+    "unique_edges": 275,
+    "raw_edges": 275,
+    "sequential_edges": 264,
+    "nonsequential_edges": 11,
+    "connected_components": 1,
+    "cycle_rank": 11,
+    "early_late_edges": 11,
+    "early_late_pairs": [
+      [
+        0,
+        252
+      ],
+      [
+        0,
+        255
+      ],
+      [
+        0,
+        256
+      ],
+      [
+        1,
+        257
+      ],
+      [
+        2,
+        258
+      ],
+      [
+        3,
+        259
+      ],
+      [
+        5,
+        260
+      ],
+      [
+        6,
+        261
+      ],
+      [
+        6,
+        262
+      ],
+      [
+        7,
+        263
+      ],
+      [
+        8,
+        264
+      ]
+    ],
+    "max_endpoint_match_error_m": 0.0,
+    "first_last_node_distance_m": 0.8142843810963032,
+    "revisit_constraints_verified": true,
+    "detector_callback_verified": false,
+    "criterion": "One sensor with contiguous acquisition-order IDs. Early/late edges connect the first/last 15% of IDs and span >=75% of ID range.",
+    "limitation": "Marker edges have no constraint type, timestamp provenance, covariance or optimizer residual. Confirms graph connections across the revisit, not which internal loop detector function added them. Node endpoint distance is not the final vehicle closure error."
+  },
+  "revisit_constraints_verified": true,
+  "loop_closure_activation_verified": false,
+  "loop_closure_note": "See graph evidence for cross-temporal revisit constraints. MarkerArray does not identify the internal detector callback. Driving a closed route and a single wall band alone are insufficient."
+}

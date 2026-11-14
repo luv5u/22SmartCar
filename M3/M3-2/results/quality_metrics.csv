@@ -1,0 +1,15 @@
+metric,value,unit
+south_outer_wall.rms_m,0.02433369026633364,m
+south_outer_wall.max_abs_m,0.04930191068837614,m
+south_outer_wall.band90_m,0.07744999157742527,m
+south_inner_wall.rms_m,0.028988763773821976,m
+south_inner_wall.max_abs_m,0.06275564374473028,m
+south_inner_wall.band90_m,0.09182823473372992,m
+gate.width_min_m,0.9500000000000001,m
+gate.min_cells,19,cells
+final_wall_bands.multiple_band_slices,0,slices
+local_gate_passable,True,boolean
+route.duration_s,199.1,s
+route.max_tracking_error_m,0.03247469125925351,m
+route.last_logged_distance_to_start_m,0.1503308129464597,m
+route.min_front_range_m,0.5717756152153015,m

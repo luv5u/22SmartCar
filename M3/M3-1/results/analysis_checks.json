@@ -1,0 +1,188 @@
+{
+  "source_directory": "/home/luv5u/code/22SmartCar/M3/M3-1/logs/ten_runs_01",
+  "expected_runs": 10,
+  "plot_run": 1,
+  "side_m": 2.0,
+  "radius_m": 0.6,
+  "truth_body_x_offset_m": -0.14,
+  "sample_standard_deviation": true,
+  "means": {
+    "odom_position_m": 0.03871060122007506,
+    "odom_angle_deg": 1.5787221447480522,
+    "odom_total_yaw_deg": 358.42127785525173,
+    "truth_position_m": 0.023762684754390643,
+    "truth_angle_deg": 0.5324673089264332,
+    "truth_total_yaw_deg": 359.4675326910735
+  },
+  "standard_deviations": {
+    "odom_position_m": 0.004802757315711286,
+    "odom_angle_deg": 0.2245904710367159,
+    "odom_total_yaw_deg": 0.2245904710367058,
+    "truth_position_m": 0.002452358171635006,
+    "truth_angle_deg": 0.15130707443509323,
+    "truth_total_yaw_deg": 0.15130707443512048
+  },
+  "checks": [
+    {
+      "file": "logs/ten_runs_01/run_01_odom.csv",
+      "samples": 1798,
+      "duration_s": 36.0,
+      "repeated_timestamps": 1437,
+      "largest_timestamp_gap_s": 0.10000000000002274,
+      "gap_warning": false
+    },
+    {
+      "file": "logs/ten_runs_01/run_01_truth.csv",
+      "samples": 1057,
+      "duration_s": 35.80000000000001,
+      "repeated_timestamps": 698,
+      "largest_timestamp_gap_s": 0.10000000000002274,
+      "gap_warning": false
+    },
+    {
+      "file": "logs/ten_runs_01/run_02_odom.csv",
+      "samples": 1797,
+      "duration_s": 35.89999999999998,
+      "repeated_timestamps": 1437,
+      "largest_timestamp_gap_s": 0.10000000000002274,
+      "gap_warning": false
+    },
+    {
+      "file": "logs/ten_runs_01/run_02_truth.csv",
+      "samples": 1058,
+      "duration_s": 35.89999999999998,
+      "repeated_timestamps": 698,
+      "largest_timestamp_gap_s": 0.10000000000002274,
+      "gap_warning": false
+    },
+    {
+      "file": "logs/ten_runs_01/run_03_odom.csv",
+      "samples": 1798,
+      "duration_s": 36.0,
+      "repeated_timestamps": 1437,
+      "largest_timestamp_gap_s": 0.10000000000002274,
+      "gap_warning": false
+    },
+    {
+      "file": "logs/ten_runs_01/run_03_truth.csv",
+      "samples": 1058,
+      "duration_s": 35.89999999999998,
+      "repeated_timestamps": 698,
+      "largest_timestamp_gap_s": 0.10000000000002274,
+      "gap_warning": false
+    },
+    {
+      "file": "logs/ten_runs_01/run_04_odom.csv",
+      "samples": 1796,
+      "duration_s": 35.80000000000001,
+      "repeated_timestamps": 1437,
+      "largest_timestamp_gap_s": 0.10000000000002274,
+      "gap_warning": false
+    },
+    {
+      "file": "logs/ten_runs_01/run_04_truth.csv",
+      "samples": 1058,
+      "duration_s": 35.89999999999998,
+      "repeated_timestamps": 698,
+      "largest_timestamp_gap_s": 0.10000000000002274,
+      "gap_warning": false
+    },
+    {
+      "file": "logs/ten_runs_01/run_05_odom.csv",
+      "samples": 1797,
+      "duration_s": 35.900000000000034,
+      "repeated_timestamps": 1437,
+      "largest_timestamp_gap_s": 0.10000000000002274,
+      "gap_warning": false
+    },
+    {
+      "file": "logs/ten_runs_01/run_05_truth.csv",
+      "samples": 1058,
+      "duration_s": 35.900000000000034,
+      "repeated_timestamps": 698,
+      "largest_timestamp_gap_s": 0.10000000000002274,
+      "gap_warning": false
+    },
+    {
+      "file": "logs/ten_runs_01/run_06_odom.csv",
+      "samples": 1797,
+      "duration_s": 35.90000000000009,
+      "repeated_timestamps": 1437,
+      "largest_timestamp_gap_s": 0.10000000000002274,
+      "gap_warning": false
+    },
+    {
+      "file": "logs/ten_runs_01/run_06_truth.csv",
+      "samples": 1058,
+      "duration_s": 35.90000000000009,
+      "repeated_timestamps": 698,
+      "largest_timestamp_gap_s": 0.10000000000002274,
+      "gap_warning": false
+    },
+    {
+      "file": "logs/ten_runs_01/run_07_odom.csv",
+      "samples": 1797,
+      "duration_s": 35.90000000000009,
+      "repeated_timestamps": 1437,
+      "largest_timestamp_gap_s": 0.10000000000002274,
+      "gap_warning": false
+    },
+    {
+      "file": "logs/ten_runs_01/run_07_truth.csv",
+      "samples": 1058,
+      "duration_s": 35.90000000000009,
+      "repeated_timestamps": 698,
+      "largest_timestamp_gap_s": 0.10000000000002274,
+      "gap_warning": false
+    },
+    {
+      "file": "logs/ten_runs_01/run_08_odom.csv",
+      "samples": 1797,
+      "duration_s": 35.90000000000009,
+      "repeated_timestamps": 1437,
+      "largest_timestamp_gap_s": 0.10000000000002274,
+      "gap_warning": false
+    },
+    {
+      "file": "logs/ten_runs_01/run_08_truth.csv",
+      "samples": 1058,
+      "duration_s": 35.90000000000009,
+      "repeated_timestamps": 698,
+      "largest_timestamp_gap_s": 0.10000000000002274,
+      "gap_warning": false
+    },
+    {
+      "file": "logs/ten_runs_01/run_09_odom.csv",
+      "samples": 1796,
+      "duration_s": 35.80000000000007,
+      "repeated_timestamps": 1437,
+      "largest_timestamp_gap_s": 0.10000000000002274,
+      "gap_warning": false
+    },
+    {
+      "file": "logs/ten_runs_01/run_09_truth.csv",
+      "samples": 1058,
+      "duration_s": 35.90000000000009,
+      "repeated_timestamps": 698,
+      "largest_timestamp_gap_s": 0.10000000000002274,
+      "gap_warning": false
+    },
+    {
+      "file": "logs/ten_runs_01/run_10_odom.csv",
+      "samples": 1797,
+      "duration_s": 35.90000000000009,
+      "repeated_timestamps": 1437,
+      "largest_timestamp_gap_s": 0.10000000000002274,
+      "gap_warning": false
+    },
+    {
+      "file": "logs/ten_runs_01/run_10_truth.csv",
+      "samples": 1058,
+      "duration_s": 36.0,
+      "repeated_timestamps": 697,
+      "largest_timestamp_gap_s": 0.10000000000002274,
+      "gap_warning": false
+    }
+  ],
+  "warnings": []
+}

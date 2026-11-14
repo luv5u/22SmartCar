@@ -6,3 +6,6 @@ M3/M3-1/log/
 # Python
 __pycache__/
 *.pyc
+
+# Failed M3-2 diagnostic recording; retained locally
+/M3/M3-2/bags/mapping_01/
