@@ -8,6 +8,7 @@ import argparse
 import csv
 import json
 import math
+import os
 from pathlib import Path
 
 import numpy as np
@@ -315,11 +316,12 @@ def main():
                   f"- 最后一条记录距第一条 {route['last_logged_distance_to_start_m']:.4f} m。脚本约在 0.15 m 起点容差内停止，且 CSV 未写入最终停车样本，因此此值不能当作最终闭环漂移。",
                   '- `Loop complete` 由运行终端确认；本程序仅校验 CSV，不能从缺少结束事件的 CSV 独立认证正常退出。',
                   '- 图：`route_coverage.png`。','']
-    lines += ['## 仍需补齐的验证','',
-              ('- 位姿图已检查：存在跨早期与末期的重访约束；不声称已识别内部检测函数。' if graph and graph['revisit_constraints_verified'] else '- SLAM 实际回环触发的日志或位姿图证据。'),
-              '- 用 map_server 加载保存地图的验证。',
-              '- rosbag 完整性检查；本程序没有读取或验证 bag。',
-              '- 最终 README、依赖与复现步骤；可选的单参数对比实验尚未开展。','']
+    readme_link = Path(os.path.relpath(Path(__file__).resolve().parents[1] / 'README.md', out.resolve())).as_posix()
+    lines += ['## 5. 验证范围与配套记录','',
+              ('- 本次输入位姿图已验证存在跨早期与末期的重访约束；MarkerArray 不标注内部检测函数。' if graph and graph['revisit_constraints_verified'] else '- 当前输入尚未验证早期/末期重访约束；需另提供位姿图或日志证据。'),
+              f'- 地图重新加载、录包数据库检查是独立验证步骤，本程序不执行这两项；本次正式数据 mapping_02 的已完成验证、日期与结果见 [README 第 8 节]({readme_link}#8-独立验证记录)。不能把这些既有验证自动套用于新的地图或录包。',
+              '- 本程序验证静态地图通行性，不代表已完成 M3-3 的 Nav2 导航。',
+              '- 单参数对比实验为原题选做，本次未开展，不计入必做项缺失。','']
     (out/'quality_report.md').write_text('\n'.join(lines),encoding='utf-8')
     print(f"Outer wall: RMS={outer['rms_m']:.6f}m; max={outer['max_abs_m']:.6f}m")
     print(f"Inner wall: RMS={inner['rms_m']:.6f}m; max={inner['max_abs_m']:.6f}m")
@@ -330,3 +332,4 @@ def main():
     print(f'Outputs: {out.resolve()}')
 
 if __name__=='__main__':main()
+
