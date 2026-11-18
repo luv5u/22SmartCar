@@ -1,0 +1,14 @@
+<sdf version="1.6">
+  <model name="m34_test_box">
+    <static>true</static>
+    <link name="body">
+      <collision name="collision">
+        <geometry><box><size>0.4 0.4 0.8</size></box></geometry>
+      </collision>
+      <visual name="visual">
+        <geometry><box><size>0.4 0.4 0.8</size></box></geometry>
+        <material><diffuse>1 0.3 0 1</diffuse></material>
+      </visual>
+    </link>
+  </model>
+</sdf>
