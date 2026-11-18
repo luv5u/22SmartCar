@@ -1,0 +1,10 @@
+"""Delegate to the source tree so the sibling M3-2 assets remain available."""
+from launch import LaunchDescription
+from launch.actions import IncludeLaunchDescription
+from launch.launch_description_sources import PythonLaunchDescriptionSource
+
+
+def generate_launch_description():
+    return LaunchDescription([IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(r'@CMAKE_CURRENT_SOURCE_DIR@/launch/bringup.launch.py')
+    )])
