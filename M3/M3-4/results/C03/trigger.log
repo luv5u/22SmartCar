@@ -1,0 +1,4 @@
+READY：服务和里程计已就绪，可以发导航目标
+请求生成：起步后 3.000 仿真秒，odom=(1.117, 0.140)
+服务返回：success=False，Entity [m34_test_box] already exists.
+返回时最近一帧里程计：起步后 3.080 仿真秒，odom=(1.145, 0.144)
