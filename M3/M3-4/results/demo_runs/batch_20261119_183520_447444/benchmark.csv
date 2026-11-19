@@ -1,0 +1,2 @@
+run,weight,spawn_ok,outcome,wall_s,goal_id,odom_m,extra_m,heading_rad_per_m,note
+A01,3.81,True,SUCCEEDED,25.571041980000018,e17a340574e044698fae4109f812cedd,8.707110672573721,0.0019824725737205284,0.30045500583290313,
