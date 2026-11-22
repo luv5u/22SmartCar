@@ -1,0 +1,18 @@
+[controller_server-10] [INFO] [1795326432.108275005] [controller_server]: Created progress_checker : progress_checker of type nav2_controller::SimpleProgressChecker
+[planner_server-12] [WARN] [1795326440.124595526] [planner_server.rclcpp]: failed to send response to /planner_server/get_state (timeout): client will not receive response, at ./src/rmw_response.cpp:154, at ./src/rcl/service.c:314
+[controller_server-10] [WARN] [1795326468.075887294] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+[controller_server-10] [WARN] [1795326468.263140261] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+[planner_server-12] [WARN] [1795326468.417840132] [planner_server]: GridBased: failed to create plan, invalid use: Starting point in lethal space! Cannot create feasible plan..
+[planner_server-12] [WARN] [1795326468.417937600] [planner_server]: Planning algorithm GridBased failed to generate a valid path to (6.00, 4.00)
+[planner_server-12] [WARN] [1795326468.417964658] [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+[planner_server-12] [WARN] [1795326469.416689716] [planner_server]: GridBased: failed to create plan, invalid use: Starting point in lethal space! Cannot create feasible plan..
+[planner_server-12] [WARN] [1795326469.416811268] [planner_server]: Planning algorithm GridBased failed to generate a valid path to (6.00, 4.00)
+[planner_server-12] [WARN] [1795326469.416834721] [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+[planner_server-12] [WARN] [1795326471.466516654] [planner_server]: GridBased: failed to create plan, invalid use: Starting point in lethal space! Cannot create feasible plan..
+[planner_server-12] [WARN] [1795326471.466619265] [planner_server]: Planning algorithm GridBased failed to generate a valid path to (6.00, 4.00)
+[planner_server-12] [WARN] [1795326471.466658322] [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+[planner_server-12] [WARN] [1795326472.417255068] [planner_server]: GridBased: failed to create plan, invalid use: Starting point in lethal space! Cannot create feasible plan..
+[planner_server-12] [WARN] [1795326472.417347821] [planner_server]: Planning algorithm GridBased failed to generate a valid path to (6.00, 4.00)
+[planner_server-12] [WARN] [1795326472.417368988] [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+[bt_navigator-14] [WARN] [1795326472.444557035] [bt_navigator]: [navigate_to_pose] [ActionServer] Aborting handle.
+[bt_navigator-14] [ERROR] [1795326472.444901258] [bt_navigator]: Goal failed

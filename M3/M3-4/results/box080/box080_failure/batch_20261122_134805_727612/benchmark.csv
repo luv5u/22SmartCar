@@ -1,0 +1,2 @@
+run,weight,spawn_ok,outcome,wall_s,goal_id,odom_m,extra_m,heading_rad_per_m,box_x_m,box_y_m,obstacle_at,delay_sim_s,baseline_m,note
+A01,3.81,True,ABORTED,10.405303089000881,98963339896d4398bff2e5a54fe3e09e,1.3609386400746417,,0.19098531899100848,0.8,0.8,"2,-4",3.0,8.7051282,

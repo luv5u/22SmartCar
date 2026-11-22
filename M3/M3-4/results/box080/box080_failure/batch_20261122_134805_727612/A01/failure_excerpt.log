@@ -1,0 +1,19 @@
+[controller_server-10] [INFO] [1795326486.668190951] [controller_server]: Created progress_checker : progress_checker of type nav2_controller::SimpleProgressChecker
+[controller_server-10] [WARN] [1795326502.538499785] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+[planner_server-12] [WARN] [1795326502.721694424] [planner_server]: GridBased: failed to create plan, no valid path found.
+[planner_server-12] [WARN] [1795326502.721764520] [planner_server]: Planning algorithm GridBased failed to generate a valid path to (6.00, 4.00)
+[planner_server-12] [WARN] [1795326502.721790845] [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+[controller_server-10] [WARN] [1795326502.723494519] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+[bt_navigator-14] [ERROR] [1795326502.761593388] [bt_navigator_navigate_to_pose_rclcpp_node]: Failed to get result for compute_path_to_pose in node halt!
+[planner_server-12] [WARN] [1795326503.422463041] [planner_server]: GridBased: failed to create plan, invalid use: Starting point in lethal space! Cannot create feasible plan..
+[planner_server-12] [WARN] [1795326503.422565728] [planner_server]: Planning algorithm GridBased failed to generate a valid path to (6.00, 4.00)
+[planner_server-12] [WARN] [1795326503.422604102] [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+[controller_server-10] [WARN] [1795326505.152825821] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+[controller_server-10] [WARN] [1795326505.389778772] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+[planner_server-12] [WARN] [1795326507.436660062] [planner_server]: GridBased: failed to create plan, no valid path found.
+[planner_server-12] [WARN] [1795326507.436770739] [planner_server]: Planning algorithm GridBased failed to generate a valid path to (6.00, 4.00)
+[planner_server-12] [WARN] [1795326507.436809540] [planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+[controller_server-10] [WARN] [1795326508.851915808] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+[controller_server-10] [WARN] [1795326508.982268916] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+[bt_navigator-14] [WARN] [1795326509.003736758] [bt_navigator]: [navigate_to_pose] [ActionServer] Aborting handle.
+[bt_navigator-14] [ERROR] [1795326509.004060452] [bt_navigator]: Goal failed

@@ -1,0 +1,2 @@
+[controller_server-10] [INFO] [1795321512.374627251] [controller_server]: Created progress_checker : progress_checker of type nav2_controller::SimpleProgressChecker
+[controller_server-10] [WARN] [1795321518.990622425] [controller_server.rclcpp]: failed to send response to /controller_server/get_parameters (timeout): client will not receive response, at ./src/rmw_response.cpp:154, at ./src/rcl/service.c:314

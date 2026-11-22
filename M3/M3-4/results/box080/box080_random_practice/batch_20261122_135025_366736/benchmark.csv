@@ -1,0 +1,4 @@
+run,weight,spawn_ok,outcome,wall_s,goal_id,odom_m,extra_m,heading_rad_per_m,box_x_m,box_y_m,obstacle_at,delay_sim_s,baseline_m,note
+A01,3.81,False,GOAL_RESPONSE_TIMEOUT,,,,,,0.8,0.8,"3.5,-4.2",3.0,8.7051282,goal client returned no accepted goal UUID
+A02,3.81,True,SUCCEEDED,25.6712572739998,979f629b6a764e9fa5de0c3880c1f655,8.754031262958266,0.04890306295826541,0.283157862421952,0.8,0.8,"3.5,-4.2",3.0,8.7051282,
+A03,3.81,True,SUCCEEDED,25.561204208999698,d94c043569e1434d8cc529220dea2062,8.724988400320527,0.019860200320525934,0.299649226157894,0.8,0.8,"3.5,-4.2",3.0,8.7051282,
