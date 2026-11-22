@@ -49,3 +49,26 @@ cd ~/code/22SmartCar/M3/M3-4
 ```
 
 此步骤使用 matplotlib。逐轮指标、失败调试日志分析和调优比较分别见 results/benchmark.csv、results/failure_boundary.md 和 results/tuning_log.md。
+
+## 0.80 m 方块展示
+
+上文报告、历史轨迹图和历史 30 次有效实验均对应 0.40 m 方块。当前 test_box.sdf 的碰撞与可视尺寸均为 0.80 × 0.80 × 0.80 m。新脚本会把实际模型存入批次目录，CSV 记录尺寸、世界坐标、触发延时；轮次目录中的 trajectory.csv 保存按目标执行窗口截取的里程计轨迹。
+
+```bash
+/usr/bin/python3 scripts/run_benchmark.py --planners A --runs 1 --obstacle-at=3,-4 --delay 3 --out results/box080_pilot
+/usr/bin/python3 scripts/run_benchmark.py --planners A,B --runs 10 --obstacle-at=3,-4 --delay 3 --out results/box080_formal
+```
+
+先看试跑的 trigger.log、goal.log 和实车仿真画面。保存接近、检测、绕行、通过四帧。正式 A/B 各取 10 次有效注入；保留中止、注入失败的原始记录。比较指标后，说明对较差方案的调优理由。若采用已有的中间权重 5.715，再执行：
+
+```bash
+/usr/bin/python3 scripts/run_benchmark.py --planners C --runs 10 --obstacle-at=3,-4 --delay 3 --out results/box080_tuned
+```
+
+考官指定位置时，替换 --obstacle-at 的世界坐标，使用 --runs 2 和单独的输出目录。另选靠近起点的位置单独验证失效，记录实际表现和日志。旧报告的失效边界和成功率仅用于原尺寸。根据新批次重新生成图表、填写四问报告，并记录未产生新路径等观察限制。
+
+```bash
+python3 scripts/plot_batches.py results/box080_formal/batch_* results/box080_tuned/batch_* --out results/box080_summary
+```
+
+只传同一实验条件的正式批次。汇总表保留每组有效注入次数和成功次数，可用于检查是否需要补测。

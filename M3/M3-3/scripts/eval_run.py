@@ -110,20 +110,41 @@ def evaluate(db, out):
         axes[1].plot((t-start)/1e9,w,label='wz (rad/s)')
         axes[1].legend()
     axes[1].set(xlabel='Receipt time since EXECUTING (s)',title='Final /cmd_vel')
-    costs = list(window('/local_costmap/costmap'))
-    if costs:
-        _,r = costs[len(costs)//2]
-        _,frame = r.header()
-        r.take('iI',4)
-        res, = r.take('f',4)
-        width,height = r.take('II',4)
-        x,y,_ = r.pose()
-        count = r.uint()
-        grid = np.frombuffer(r.data,dtype='i1',count=count,offset=r.offset).reshape(height,width)
-        axes[2].imshow(np.ma.masked_less(grid,0),origin='lower',vmin=0,vmax=100,
-                       extent=(x,x+width*res,y,y+height*res),cmap='magma',interpolation='nearest')
-        axes[2].set(xlabel=f'{frame} x (m)',ylabel=f'{frame} y (m)')
+    def costmap(axis, topic):
+        costs = list(window(topic))
+        if costs:
+            _,r = costs[len(costs)//2]
+            _,frame = r.header()
+            r.take('iI',4)
+            res, = r.take('f',4)
+            width,height = r.take('II',4)
+            x,y,_ = r.pose()
+            count = r.uint()
+            grid = np.frombuffer(r.data,dtype='i1',count=count,offset=r.offset).reshape(height,width)
+            axis.imshow(np.ma.masked_less(grid,0),origin='lower',vmin=0,vmax=100,
+                           extent=(x,x+width*res,y,y+height*res),cmap='magma',interpolation='nearest')
+            axis.set(xlabel=f'{frame} x (m)',ylabel=f'{frame} y (m)')
+            return True
+        return False
+
+    costmap(axes[2], '/local_costmap/costmap')
     axes[2].set_title('Local costmap at middle sample')
+    # Keep the original composite and export standalone evidence for the demo.
+    for label in ('global_costmap', 'local_costmap', 'cmd_vel'):
+        evidence, axis = plt.subplots(figsize=(6, 4), constrained_layout=True)
+        if label == 'cmd_vel':
+            available = bool(speed)
+            if available:
+                for line in axes[1].lines:
+                    axis.plot(line.get_xdata(), line.get_ydata(), label=line.get_label())
+                axis.set_xlabel('Receipt time since EXECUTING (s)')
+                axis.legend()
+        else:
+            available = costmap(axis, '/' + label + '/costmap')
+        if available:
+            axis.set_title(label)
+            evidence.savefig(out.parent / f'{out.name}_{label}.png', dpi=160)
+        plt.close(evidence)
     fig.suptitle(status)
     fig.savefig(out.with_suffix('.png'),dpi=160)
     plt.close(fig)

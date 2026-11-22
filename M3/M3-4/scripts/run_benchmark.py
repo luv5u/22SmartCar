@@ -11,6 +11,7 @@ import sqlite3
 import subprocess as sp
 import struct
 import time
+import xml.etree.ElementTree as ET
 from contextlib import ExitStack, contextmanager
 from datetime import datetime
 from pathlib import Path
@@ -22,7 +23,7 @@ STATUS = "/navigate_to_pose/_action/status"
 TOPICS = ["/clock", "/odom", "/scan", "/tf", "/tf_static", "/plan",
           "/cmd_vel", STATUS, "/navigate_to_pose/_action/feedback"]
 FIELDS = ["run", "weight", "spawn_ok", "outcome", "wall_s", "goal_id",
-          "odom_m", "extra_m", "heading_rad_per_m", "note"]
+          "odom_m", "extra_m", "heading_rad_per_m", "box_x_m", "box_y_m", "obstacle_at", "delay_sim_s", "baseline_m", "note"]
 
 
 @contextmanager
@@ -87,7 +88,7 @@ def ready(launch, folder, planner):
     return value
 
 
-def bag_metrics(bag, goal):
+def bag_metrics(bag, goal, trajectory):
     poses, statuses = [], []
     for path in sorted(bag.glob("*.db3")):
         db = sqlite3.connect(path.resolve().as_uri()+"?mode=ro", uri=True)
@@ -123,6 +124,10 @@ def bag_metrics(bag, goal):
         raise ValueError("insufficient odometry")
     distance = sum(math.hypot(b[1]-a[1], b[2]-a[2]) for a,b in zip(track,track[1:]))
     turns = sum(abs(math.remainder(b[3]-a[3],2*math.pi)) for a,b in zip(track,track[1:]))
+    with trajectory.open("w", newline="") as output:
+        writer = csv.writer(output)
+        writer.writerow(["stamp_ns", "odom_x", "odom_y", "yaw_rad"])
+        writer.writerows(track)
     return distance, turns/distance if distance > 0 else ""
 
 
@@ -148,7 +153,7 @@ def trial(folder, planner, args, row):
         row.update(outcome=goal["outcome"],wall_s=goal["accept_to_result_wall_s"],goal_id=goal["goal_id"])
         time.sleep(2)
         row["spawn_ok"] = "success=True" in (folder/"trigger.log").read_text()
-    distance, smooth = bag_metrics(bag, row["goal_id"])
+    distance, smooth = bag_metrics(bag, row["goal_id"], folder/"trajectory.csv")
     row.update(odom_m=distance,heading_rad_per_m=smooth)
     if row["spawn_ok"] and row["outcome"] == "SUCCEEDED":
         row["extra_m"] = distance - args.baseline_m
@@ -178,6 +183,9 @@ def main():
         parser.exit(2,"Close the existing Gazebo launch before starting this batch.\n")
     session = args.out.resolve()/datetime.now().strftime("batch_%Y%m%d_%H%M%S_%f")
     session.mkdir(parents=True)
+    model = ROOT/"models/test_box.sdf"
+    shutil.copy2(model, session/"test_box.sdf")
+    box = ET.parse(model).findtext(".//collision/geometry/box/size").split()
     print(session,flush=True)
     with (session/"benchmark.csv").open("x",newline="") as f:
         writer=csv.DictWriter(f,fieldnames=FIELDS)
@@ -187,7 +195,8 @@ def main():
                 label=f"{p}{i:02d}"
                 folder=session/label
                 folder.mkdir()
-                row={"run":label,"outcome":"INCOMPLETE"}
+                row={"run":label,"outcome":"INCOMPLETE", "box_x_m":box[0], "box_y_m":box[1],
+                     "obstacle_at":args.obstacle_at, "delay_sim_s":args.delay, "baseline_m":args.baseline_m}
                 try:
                     trial(folder,p,args,row)
                 except (Exception, KeyboardInterrupt) as exc:

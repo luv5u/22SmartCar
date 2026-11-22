@@ -254,7 +254,10 @@ def build(outdir, frames, seed, laser_xyz, camera_xyz, camera_rpy,
             writer.write(TOPIC_INFO, serialize_message(info), t_ns)
             n_cam += 1
 
-    writer.close()
+    # Humble releases without an explicit close() flush on destruction.
+    if hasattr(writer, 'close'):
+        writer.close()
+    del writer
     stats = {"n_scan": n_scan, "n_cam": n_cam,
              "scan_times": scan_times, "cam_times": cam_times}
 
