@@ -45,7 +45,11 @@ def main():
     for group, rows in sorted(records.items()):
         valid = [r for r in rows if r["spawn_ok"] == "True"]
         wins = [r for r in valid if r["outcome"] == "SUCCEEDED"]
-        values = {key: mean(float(r[key]) for r in wins) if wins else None for key in metrics[1:]}
+        values = {}
+        for key in metrics[1:]:
+            samples = [float(r[key]) for r in wins if r[key] != ""]
+            values[key] = mean(samples) if samples else None
+            values[key + "_n"] = len(samples)
         summaries.append(dict(group=group, attempts=len(rows), valid=len(valid), successes=len(wins),
                               success_percent=100*len(wins)/len(valid) if valid else None, **values))
         axis.plot([], [], color=colors[group], label=group)
