@@ -79,13 +79,42 @@ def ready(launch, folder, planner):
         time.sleep(1)
     else:
         raise RuntimeError("stack not ready; inspect ready.log")
-    answer = sp.check_output(["ros2", "param", "get", "/controller_server",
-                              "FollowPath.CostCritic.cost_weight"], text=True, timeout=15)
-    (folder/"weight.txt").write_text(answer)
-    value = float(answer.split()[-1])
-    if not math.isclose(value, {"A":3.81,"B":7.62,"C":5.715}[planner]):
-        raise RuntimeError(f"unexpected cost weight {value}")
-    return value
+    return controller_weight(folder, planner)
+
+
+def controller_weight(folder, planner):
+    import rclpy
+    from rcl_interfaces.msg import ParameterType
+    from rcl_interfaces.srv import GetParameters
+
+    name = "FollowPath.CostCritic.cost_weight"
+    service = "/controller_server/get_parameters"
+    expected = {"A": 3.81, "B": 7.62, "C": 5.715}[planner]
+    rclpy.init(args=[])
+    node = rclpy.create_node("m34_weight_check")
+    try:
+        client = node.create_client(GetParameters, service)
+        if not client.wait_for_service(timeout_sec=20.0):
+            raise RuntimeError(f"{service} unavailable after 20 s")
+        future = client.call_async(GetParameters.Request(names=[name]))
+        rclpy.spin_until_future_complete(node, future, timeout_sec=10.0)
+        if not future.done():
+            raise RuntimeError(f"{service} did not reply within 10 s")
+        values = future.result().values
+        if len(values) != 1 or values[0].type != ParameterType.PARAMETER_DOUBLE:
+            types = [v.type for v in values]
+            raise RuntimeError(f"{name}: expected a double; returned types={types} (0=unset)")
+        value = values[0].double_value
+        if not math.isclose(value, expected):
+            raise RuntimeError(f"{name}: expected {expected} for {planner}, got {value}")
+        (folder/"weight.txt").write_text(f"{name} = {value}\n")
+        return value
+    except Exception as error:
+        (folder/"weight.txt").write_text(f"{service}: {error}\n")
+        raise
+    finally:
+        node.destroy_node()
+        rclpy.shutdown()
 
 
 def bag_metrics(bag, goal, trajectory):
