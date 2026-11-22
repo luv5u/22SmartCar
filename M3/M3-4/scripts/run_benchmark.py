@@ -2,6 +2,7 @@
 """Repeat the M3-4 Gazebo experiment. Each invocation owns a new session directory."""
 import argparse
 import csv
+import fcntl
 import math
 import os
 import re
@@ -117,7 +118,16 @@ def controller_weight(folder, planner):
         rclpy.shutdown()
 
 
+class MissingTrack(ValueError):
+    pass
+
+
 def bag_metrics(bag, goal, trajectory):
+    from action_msgs.msg import GoalStatusArray
+    from rclpy.serialization import deserialize_message
+
+    if not goal:
+        raise MissingTrack("goal client returned no accepted goal UUID")
     poses, statuses = [], []
     for path in sorted(bag.glob("*.db3")):
         db = sqlite3.connect(path.resolve().as_uri()+"?mode=ro", uri=True)
@@ -129,11 +139,9 @@ def bag_metrics(bag, goal, trajectory):
                 if data[:2] != b"\x00\x01":
                     raise ValueError("expected little-endian CDR")
                 if name == STATUS:
-                    count = struct.unpack_from("<I", data, 4)[0]
-                    for j in range(count):
-                        offset = 8 + j*28
-                        if data[offset:offset+16].hex() == goal:
-                            statuses.append((t,data[offset+24]))
+                    for item in deserialize_message(data, GoalStatusArray).status_list:
+                        if bytes(item.goal_info.goal_id.uuid).hex() == goal:
+                            statuses.append((t, item.status))
                 else:
                     # CDR alignment is relative to the payload after the 4-byte prefix.
                     pos = 8
@@ -146,11 +154,15 @@ def bag_metrics(bag, goal, trajectory):
                     poses.append((t,x,y,yaw))
         finally:
             db.close()
-    begin = min(t for t,s in statuses if s == 2)
-    end = min(t for t,s in statuses if t >= begin and s in (4,5,6))
+    begin = min((t for t,s in statuses if s == 2), default=None)
+    if begin is None:
+        raise MissingTrack(f"no EXECUTING for {goal}; matched states={sorted(set(s for _,s in statuses))}")
+    end = min((t for t,s in statuses if t >= begin and s in (4,5,6)), default=None)
+    if end is None:
+        raise MissingTrack(f"no terminal status for {goal}")
     track = sorted(p for p in poses if begin <= p[0] <= end)
     if len(track) < 2:
-        raise ValueError("insufficient odometry")
+        raise MissingTrack("insufficient odometry")
     distance = sum(math.hypot(b[1]-a[1], b[2]-a[2]) for a,b in zip(track,track[1:]))
     turns = sum(abs(math.remainder(b[3]-a[3],2*math.pi)) for a,b in zip(track,track[1:]))
     with trajectory.open("w", newline="") as output:
@@ -182,10 +194,18 @@ def trial(folder, planner, args, row):
         row.update(outcome=goal["outcome"],wall_s=goal["accept_to_result_wall_s"],goal_id=goal["goal_id"])
         time.sleep(2)
         row["spawn_ok"] = "success=True" in (folder/"trigger.log").read_text()
-    distance, smooth = bag_metrics(bag, row["goal_id"], folder/"trajectory.csv")
-    row.update(odom_m=distance,heading_rad_per_m=smooth)
-    if row["spawn_ok"] and row["outcome"] == "SUCCEEDED":
-        row["extra_m"] = distance - args.baseline_m
+    recover_metrics(folder, row)
+
+
+def recover_metrics(folder, row):
+    try:
+        distance, smooth = bag_metrics(folder/"bag", row["goal_id"], folder/"trajectory.csv")
+    except MissingTrack as error:
+        row["note"] = str(error)
+        return
+    row.update(odom_m=distance, heading_rad_per_m=smooth)
+    if str(row["spawn_ok"]) == "True" and row["outcome"] == "SUCCEEDED":
+        row["extra_m"] = distance - float(row["baseline_m"])
 
 
 def main():
@@ -196,6 +216,7 @@ def main():
     parser.add_argument("--delay", default=3., type=float)
     parser.add_argument("--out", default=ROOT/"results", type=Path)
     parser.add_argument("--baseline-m", default=8.7051282, type=float)
+    parser.add_argument("--resume", type=Path, help="existing batch directory; complete remaining injected trials")
     args = parser.parse_args()
     planners = [s.strip().upper() for s in args.planners.split(",")]
     if args.runs < 1 or any(p not in ("A","B","C") for p in planners) or len(set(planners)) != len(planners):
@@ -210,18 +231,58 @@ def main():
         parser.exit(2,"Source the ROS 2 Humble environment first.\n")
     if sp.run(["pgrep","-x","gzserver"],stdout=sp.DEVNULL).returncode == 0:
         parser.exit(2,"Close the existing Gazebo launch before starting this batch.\n")
-    session = args.out.resolve()/datetime.now().strftime("batch_%Y%m%d_%H%M%S_%f")
-    session.mkdir(parents=True)
+    session = args.resume.resolve() if args.resume else args.out.resolve()/datetime.now().strftime("batch_%Y%m%d_%H%M%S_%f")
     model = ROOT/"models/test_box.sdf"
-    shutil.copy2(model, session/"test_box.sdf")
+    if args.resume:
+        if not (session/"benchmark.csv").is_file() or (session/"test_box.sdf").read_bytes() != model.read_bytes():
+            parser.error("missing original batch CSV or obstacle model differs")
+    else:
+        session.mkdir(parents=True)
+        shutil.copy2(model, session/"test_box.sdf")
+    print(session, flush=True)
     box = ET.parse(model).findtext(".//collision/geometry/box/size").split()
-    print(session,flush=True)
-    with (session/"benchmark.csv").open("x",newline="") as f:
-        writer=csv.DictWriter(f,fieldnames=FIELDS)
-        writer.writeheader()
+    with (session/"batch.lock").open("a") as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        run_session(args, session, box, planners)
+
+
+def run_session(args, session, box, planners):
+    csv_path = session/"benchmark.csv"
+    rows = []
+    if args.resume:
+        with csv_path.open(newline="") as source:
+            reader = csv.DictReader(source)
+            if reader.fieldnames != FIELDS:
+                raise ValueError("unexpected benchmark CSV format")
+            rows = list(reader)
+        for row in rows:
+            if (row["obstacle_at"] != args.obstacle_at or float(row["delay_sim_s"]) != args.delay
+                    or float(row["baseline_m"]) != args.baseline_m):
+                raise ValueError("resume with original obstacle, delay and baseline")
+        # Retain original exception notes alongside any new diagnosis.
+        for row in rows:
+            if row["odom_m"] or not row["goal_id"] or not (session/row["run"]/"bag").is_dir():
+                continue
+            original = row["note"]
+            recover_metrics(session/row["run"], row)
+            row["note"] = " | ".join(dict.fromkeys(filter(None, (original, row["note"]))))
+        temp = session/"benchmark.csv.tmp"
+        with temp.open("w", newline="") as dest:
+            writer = csv.DictWriter(dest, fieldnames=FIELDS)
+            writer.writeheader()
+            writer.writerows(rows)
+        temp.replace(csv_path)
+    with csv_path.open("a" if args.resume else "x", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=FIELDS)
+        if not args.resume:
+            writer.writeheader()
         for p in planners:
-            for i in range(1,args.runs+1):
-                label=f"{p}{i:02d}"
+            valid = sum(row["run"].startswith(p) and row["spawn_ok"] == "True" for row in rows)
+            index = max((int(path.name[1:]) for path in session.glob(p+"*")
+                         if path.is_dir() and path.name[1:].isdigit()), default=0)
+            for _ in range(max(0, args.runs-valid)):
+                index += 1
+                label = f"{p}{index:02d}"
                 folder=session/label
                 folder.mkdir()
                 row={"run":label,"outcome":"INCOMPLETE", "box_x_m":box[0], "box_y_m":box[1],
